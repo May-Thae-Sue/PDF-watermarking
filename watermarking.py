@@ -20,11 +20,12 @@ def main():
 
     f = sys.argv[1]
     origFileName = sys.argv[2]
-    
+    newFileName = "./output/"+origFileName
     
     pdfFileObj = open(origFileName, 'rb') 
     pdfWriter = PyPDF2.PdfFileWriter()
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+    
     packet = io.BytesIO()
     can = canvas.Canvas(packet, pagesize=A4)
     width, height = A4
@@ -37,10 +38,12 @@ def main():
     packet.seek(0)
     mywatermark = PdfFileReader(packet)
         
+    
     for page in range(pdfReader.numPages): 
         wmpageObj = add_watermark(mywatermark, pdfReader.getPage(page)) 
         pdfWriter.addPage(wmpageObj) 
-    newFile = open(origFileName, 'wb') 
+     
+    newFile = open(newFileName, 'wb')
     pdfWriter.write(newFile) 
     pdfFileObj.close() 
     newFile.close() 
